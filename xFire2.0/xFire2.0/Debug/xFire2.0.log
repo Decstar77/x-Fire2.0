@@ -1,0 +1,31 @@
+﻿  EntityManager.cpp
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\entitymanager.cpp(67): warning C4018: '<': signed/unsigned mismatch
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\entitymanager.cpp(73): warning C4018: '<': signed/unsigned mismatch
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\memorymanager.h(85): warning C4477: 'sprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
+  d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\entitymanager.cpp(117): note: see reference to function template instantiation 'void MemoryManager::Message<char*>(m,char *)' being compiled
+          with
+          [
+              m=char *
+          ]
+  AimLock.cpp
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\aimlock.cpp(28): warning C4018: '<': signed/unsigned mismatch
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\aimlock.cpp(33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\aimlock.cpp(35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\aimlock.cpp(45): warning C4018: '<': signed/unsigned mismatch
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\aimlock.cpp(49): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+  Generating Code...
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\entitymanager.cpp(130): warning C4715: 'EntityManger::GetEntityByTeam': not all control paths return a value
+  Compiling...
+  main.cpp
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\memorymanager.h(85): warning C4477: 'sprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'const char *'
+  d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\main.cpp(35): note: see reference to function template instantiation 'void MemoryManager::Message<const char*>(m,char *)' being compiled
+          with
+          [
+              m=const char *
+          ]
+  MemoryManager.cpp
+  Glow.cpp
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\glow.cpp(43): warning C4018: '<': signed/unsigned mismatch
+d:\games\code c++\firstrealgoatit\xfire2.0\xfire2.0\glow.cpp(54): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  xFire2.0.vcxproj -> D:\Games\Code C++\FirstRealGoAtIt\xFire2.0\Debug\xFire2.0.dll
