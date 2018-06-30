@@ -28,6 +28,8 @@ class AimLock
 		~AimLock();
 		bool Initialize(MemoryManager*, EntityManger*, OffSets*);
 		void DoAimLock();
+
+
 };
 
 

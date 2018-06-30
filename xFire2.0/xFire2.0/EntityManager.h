@@ -10,8 +10,8 @@ struct LocalPlayer
 	int Team;						////Team number
 	int Dorm;						////Dormancy
 	int Health;						////Health
-	float AngleX;					////Crosshair angle X
-	float AngleY;					////Crosshair angle Y
+	float AngleX = -4;					////Crosshair angle X
+	float AngleY = -4;					////Crosshair angle Y
 	Vector3 Position;				////vec3 position
 };
 
@@ -26,7 +26,8 @@ struct EntityPlayers
 	int Health;
 	float BaseAngleX;				////The base x-angle, first angle read. To cross reference. The angles that are relavent to the player. Note: Not set by EntityManager at all
 	float BaseAngleY;				////The base y-angle, first angle read. To cross reference. The angles that are relavent to the player. Note: Not set by EntityManager at all
-	float distanceAngle = 400;		////Distance from LocalPlayer crosshair, to the entity. (ViewMatrix wise)
+	float distanceAngleX = 400;		////Distance from LocalPlayer crosshair, to the entity. (ViewMatrix wise)
+	float distanceAngleY = 400;		////Distance from LocalPlayer crosshair, to the entity. (ViewMatrix wise)
 	Vector3 Position;				////Position of entity
 	Vector3 RelativePosition;		////Relative postion to local
 };
@@ -59,10 +60,9 @@ class EntityManger
 		void UpdateEntitiesQuick();						////Update Angles and position. Note: Requires teams to be organised. Does not recheck all base address;
 		void UpdateLocalFull();							////Updates all local attributes. Includes base address. Just calls getLocal()
 		void UpdateLocalQuick();						////Updates everything but base address. 
+		Vector3 ClampAngles(Vector3);					////Checks that all angles are in ranges
 		EntityPlayers *GetEntityByTeam(bool, int);		////Get ents by team. Returns a pointer to each element. True for on local team
 		LocalPlayer *GetLocalPlayer();					////Get localPlayer. Returns a pointer to this->Local
-
-
 };
 
 

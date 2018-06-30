@@ -22,6 +22,10 @@ bool MemoryManager::SetOffSetsEqual(OffSets *ToBeSet, OffSets *ToBeUsedToSet)
 	//ToBeSet->ClientDllBaseAdress = OffSet
 	return true;
 }
+HANDLE *MemoryManager::GetProcHandle()
+{
+	return &this->pHandle;
+}
 void MemoryManager::GetProcessStuffies(const char* name)
 {
 	try
@@ -141,6 +145,27 @@ void MemoryManager::GetModule(const char* name)
 	{
 		MessageBox(NULL, "GetModule, Unknown error", "Error", MB_OK);
 	}
+}
+
+bool MemoryManager::FreeLib()
+{
+	HMODULE m_handle;
+	m_handle = GetModuleHandleA("xFire2.0.dll");
+	if (m_handle == NULL || m_handle == INVALID_HANDLE_VALUE)
+	{
+		MessageBox(NULL, "Can't unload lib", "Lib", MB_OK);
+		return false;
+	}
+	FreeLibraryAndExitThread(m_handle, 0);
+	return true;
+}
+bool MemoryManager::SoftInitialize(OffSets *offset)
+{
+	GetModule("client.dll");
+	GetModule("engine.dll");
+	offset->ClientDllBaseAdress = (DWORD)this->mod_Client.modBaseAddr;
+	offset->EngineDllBaseAdress = (DWORD)this->mod_Engine.modBaseAddr;
+	return true;
 }
 bool MemoryManager::Initialize(OffSets *offset)
 {

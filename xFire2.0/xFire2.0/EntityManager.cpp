@@ -23,11 +23,11 @@ int EntityManger::GetAmountOf(bool team)
 }
 void EntityManger::getLocal()
 {
-	Local.BaseAddress = this->mem->Read<DWORD>(this->offsets->ClientDllBaseAdress + this->offsets->m_dwLocalPlayer);		////Get baseAddress
+	Local.BaseAddress = this->mem->Read<DWORD>(this->offsets->ClientDllBaseAdress + this->offsets->m_dwLocalPlayer);////Get baseAddress
 	Local.Team = this->mem->Read<int>(Local.BaseAddress + this->offsets->m_iTeamNum);								////Get team number
 	Local.Dorm = this->mem->Read<int>(Local.BaseAddress + this->offsets->m_dwDormant);								////Get dormancy
 	Local.Position = this->mem->Read<Vector3>(Local.BaseAddress + this->offsets->m_vecOrigin);						////Get vec3 position
-	Local.ClientState = this->mem->Read<DWORD>(this->offsets->EngineDllBaseAdress + this->offsets->dwClientState);		////Get client state base address
+	Local.ClientState = this->mem->Read<DWORD>(this->offsets->EngineDllBaseAdress + this->offsets->dwClientState);	////Get client state base address
 	Local.AngleX = this->mem->Read<float>(Local.ClientState + this->offsets->dwClientState_ViewAngles + 0x4);		////Get crosshair anglex
 	Local.AngleY = this->mem->Read<float>(Local.ClientState + this->offsets->dwClientState_ViewAngles);				////Get crosshair angley
 }
@@ -48,6 +48,8 @@ void EntityManger::getEntities()
 }
 void EntityManger::organizeByTeam()
 {
+	PlayersFriendly.resize(0);
+	PlayersEnemy.resize(0);
 	for (int i = 0; i < this->offsets->MagicNumber; i++)
 	{
 		if (Players[i].BaseAddress == 0x0)
@@ -69,6 +71,7 @@ void EntityManger::UpdateEntitiesQuick()
 		PlayersFriendly[i].Dorm = this->mem->Read<int>(PlayersFriendly[i].BaseAddress + this->offsets->m_dwDormant);				////Get dormancy
 		PlayersFriendly[i].Position = this->mem->Read<Vector3>(PlayersFriendly[i].BaseAddress + this->offsets->m_vecOrigin);		////Get position
 		PlayersFriendly[i].Health = this->mem->Read<int>(PlayersFriendly[i].BaseAddress + this->offsets->m_iHealth);				////Get health
+		PlayersFriendly[i].Spotted = this->mem->Read<bool>(PlayersFriendly[i].BaseAddress + this->offsets->m_bSpotted);				////Get spotted
 	}
 	for (int i = 0; i < PlayersEnemy.size(); i++)
 	{
@@ -81,6 +84,13 @@ void EntityManger::UpdateEntitiesQuick()
 void EntityManger::UpdateEntitiesFull()
 {
 	this->CurrentAmount = 0;
+	for (int i = 1; i < Players.size(); i++)
+	{
+		Players[i].BaseAddress = 0x0;
+		Players[i].Dorm = NULL;
+		Players[i].Team = NULL;
+		Players[i].Position = Vector3{0, 0, 0};
+	}
 	for (int i = 1; i < this->offsets->MagicNumber; i++)														////Start at 1 to ignore LocalPlayer
 	{
 		DWORD current_ent = this->mem->Read<DWORD>(this->EntityListBase + i * 0x10);							////Itterate through potiental ents
@@ -107,6 +117,30 @@ void EntityManger::UpdateLocalQuick()
 	Local.AngleX = this->mem->Read<float>(Local.ClientState + this->offsets->dwClientState_ViewAngles + 0x4);		////Get crosshair anglex
 	Local.AngleY = this->mem->Read<float>(Local.ClientState + this->offsets->dwClientState_ViewAngles);				////Get crosshair angley
 }
+
+Vector3 EntityManger::ClampAngles(Vector3 vang)
+{
+	Vector3 vret;
+
+	if (vang.x > 89.0f && vang.x <= 180.0f)
+		vret.x = 88.0f;
+
+	if (vang.x > 180.0f)
+		vret.x = vang.x - 360.0f;
+
+	if (vang.x < -89.0f)
+		vret.x = -88.0f;
+
+	if (vang.y > 180.0f)
+		vret.y = vang.y - 360.0f;
+
+	if (vang.y < -180.0f)
+		vret.y = vang.y + 360.0f;
+
+	vret.z = 0;
+
+	return vret;
+}
 EntityPlayers *EntityManger::GetEntityByTeam(bool team, int index)
 {
 	switch (team)
@@ -117,12 +151,22 @@ EntityPlayers *EntityManger::GetEntityByTeam(bool team, int index)
 				this->mem->Message<char*>("PlayersFiendly is wrong", "Players");
 				return NULL;
 			}
+			if (index > PlayersFriendly.size())
+			{
+				this->mem->Message<char*>("Something went wrong with vector size", "Players");
+				return NULL;
+			}
 			return &PlayersFriendly[index];
 
 		case false:
 			if (PlayersEnemy.size() < 1)
 			{
 				this->mem->Message<char*>("PlayerEnemy is wrong", "Players");
+				return NULL;
+			}
+			if (index > PlayersEnemy.size())
+			{
+				this->mem->Message<char*>("Something went wrong with vector size", "Players");
 				return NULL;
 			}
 			return &PlayersEnemy[index];

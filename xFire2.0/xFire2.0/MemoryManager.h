@@ -2,21 +2,22 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 #include <string>
+#include <sstream>
 #include <tchar.h>
 struct OffSets
 {
 	const int MagicNumber = 64;
-	DWORD m_bSpotted = 0x939;
+	static const DWORD m_bSpotted = 0x939;
 	DWORD m_iTeamNum = 0xF0;
 	DWORD m_iCrossHairID = 0xB2A4;
 	DWORD m_dwDormant = 0xE9;
 	DWORD m_iHealth = 0xFC;
-	DWORD m_dwLocalPlayer = 0xA9ADEC;
-	DWORD m_dwEntityList = 0x4A77AFC;
-	DWORD m_dwGlow = 0x4F94920;
+	static const DWORD m_dwLocalPlayer = 0xAAAAB4;
+	static const DWORD m_dwEntityList = 0x4A8574C;
+	static const DWORD m_dwGlow = 0x4FB2540;
 	DWORD m_dwForceAttack = 0x2ECF4D8;
-	DWORD dwClientState = 0x57D844;
-	DWORD dwClientState_ViewAngles = 0x4D10;
+	static const DWORD dwClientState = 0x57F84C; //Why you no work!!! CHANGE IT ANYWAYS, LOCAL PLAYER USES THIS OFFSET. Check aimLock.cpp for offset 
+	DWORD dwClientState_ViewAngles = 0x4D10; //0x4D10 // Notes, you can find view angles via client.dll look to AimAssist for more details
 	DWORD m_vecOrigin = 0x134;
 	DWORD m_vecViewOffset = 0x104;
 	DWORD ClientDllBaseAdress;
@@ -57,9 +58,12 @@ class MemoryManager
 	public:
 		MemoryManager();							//__Init__ of class //// Doesn't do much, all of the real magic happens in function Initialize();
 		~MemoryManager();							//Des of class //// Closes handles ect
+		HANDLE *GetProcHandle();
 		bool Initialize(OffSets *);					//Gets all base address 
+		bool SoftInitialize(OffSets *);
 		bool CompareOffSets(OffSets *, OffSets *);	//Compare offSets
 		bool SetOffSetsEqual(OffSets *, OffSets *);	//Set offsets to be the same
+		bool FreeLib();
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////Templated Functions//////////////////////////////////
@@ -85,6 +89,28 @@ class MemoryManager
 			sprintf_s(buff, _T("%d"), out);
 			MessageBox(NULL, buff, Title, MB_OK);
 		}
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////Other Functions//////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		std::string float_to_str(float f)
+		{
+			std::stringstream stream;
+			stream << f;
+			return stream.str();
+		}
+
+		void MessageF(float out, char* Title)
+		{
+			std::string outs = float_to_str(out);
+			MessageBoxA(NULL, outs.c_str(), Title, MB_OK);
+		}
+
+		void MessageI(int out, char *Title)
+		{
+			int o = out;
+			MessageBoxA(NULL, LPCSTR(std::to_string(o).c_str()), Title, MB_OK);
+		}
+
 };
 
 

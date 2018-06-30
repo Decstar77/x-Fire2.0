@@ -88,6 +88,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;XFIRE20_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -114,6 +115,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;XFIRE20_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AimAssit.h" />
     <ClInclude Include="AimLock.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Glow.h" />
@@ -146,6 +149,7 @@
     <ClInclude Include="MemoryManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AimAssit.cpp" />
     <ClCompile Include="AimLock.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EntityManager.cpp" />
