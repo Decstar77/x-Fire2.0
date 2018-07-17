@@ -11,6 +11,11 @@ Recommended you launch csgo in insecure mode
 
 
 
+clientState:0x586A74
+localPlayer:0xAB6D4C
+GlowBase: 0x4FC1ED8
+EnitityList: 0x4A92384
+
 
 
 
